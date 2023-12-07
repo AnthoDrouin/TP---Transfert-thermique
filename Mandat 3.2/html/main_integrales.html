@@ -1,0 +1,177 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>main_integrales</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-12-06"><meta name="DC.source" content="main_integrales.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Mandat 3.2 - Int&eacute;gration num&eacute;rique avec <i>trapz</i> ;</a></li><li><a href="#2">Calcul de l'&eacute;nergie perdue par le garnissage pour chaque hauteur de garnissage ;</a></li></ul></div><h2 id="1">Mandat 3.2 - Int&eacute;gration num&eacute;rique avec <i>trapz</i> ;</h2><p><b>&Eacute;quipe 1:</b></p><div><ul><li><i>Lo&iuml;c de Bluze,</i></li><li><i>Anthony Drouin,</i></li><li><i>Thomas Chaland,</i></li><li><i>Simon Gauthier,</i></li><li><i>C&eacute;dric H&eacute;bert,</i></li><li><i>Louis-George Pr&eacute;court,</i></li></ul></div><p><b>Version en date du 6 d&eacute;cembre 2023;</b></p><pre class="codeinput">clear, close <span class="string">all</span>, clc
+</pre><h2 id="2">Calcul de l'&eacute;nergie perdue par le garnissage pour chaque hauteur de garnissage ;</h2><pre class="codeinput">xg = [0.8 1.6 2.4];
+t = [0, 110, 110];
+prop = [2600, 1000];
+
+data08 = cat(2, struct2cell(load(<span class="string">'.\data_simulation_6dec\sol08'</span>)));
+data16 = cat(2, struct2cell(load(<span class="string">'.\data_simulation_6dec\sol16'</span>)));
+data24 = cat(2, struct2cell(load(<span class="string">'.\data_simulation_6dec\sol24'</span>)));
+
+distT = {data08 data16 data24};
+discrx = 1000 ;
+
+<span class="keyword">for</span> i = 1:length(xg)
+    <span class="comment">% Maillage de la surface en x ;</span>
+    x_actu = [0, xg(i), discrx];
+    meshx = linspace(min(x_actu), max(x_actu), discrx);
+
+    <span class="comment">% R&eacute;sultats de simulation mis sous forme matricielle ;</span>
+    distT_actu = distT{i};
+    distT_actu = distT_actu{:,:};
+
+    <span class="comment">% Appelation de la fonction d'int&eacute;gration ;</span>
+    [t0, tf, J_m2] = integ(x_actu, t, prop, distT_actu);
+
+    <span class="comment">% --------- Cr&eacute;ation d'une nouvelle figure &agrave; chaque nouvelle it&eacute;ration sur i ;</span>
+    figure
+    plot(meshx, distT_actu(t(1)+1,:), <span class="string">'k--'</span>, <span class="string">'LineWidth'</span>, 1.5), hold <span class="string">on</span>
+    plot(meshx, distT_actu(t(end),:),  <span class="string">'k'</span>, <span class="string">'LineWidth'</span>, 1.5),
+
+    <span class="comment">% Texte &agrave; incorporer aux figures ;</span>
+    txt = convertCharsToStrings([<span class="string">'&Eacute;nergie transmise du garnissage aux gaz =&gt; '</span>,<span class="keyword">...</span>
+        num2str(abs(J_m2)), <span class="string">' [kJ/m^2]'</span>]);
+    text(0.025, 750, txt, <span class="string">'Fontsize'</span>, 15);
+    txt2 = convertCharsToStrings([<span class="string">'Hauteur du garnissage de '</span>, num2str(xg(i)), <span class="string">' [m]'</span>]);
+
+    <span class="comment">% Mise en forme de la figure ;</span>
+    title(<span class="string">'Comparaison des distributions de temp&eacute;rature en Phase 1'</span>, <span class="string">'FontSize'</span>, 22)
+    subtitle({txt2, <span class="string">'D&eacute;but de Phase, t = 0 [sec]'</span>, <span class="string">'Fin de Phase, t = 110 [sec]'</span>}, <span class="keyword">...</span>
+        <span class="string">'FontSize'</span>, 18)
+    legend({<span class="string">'D&eacute;but de Phase'</span>, <span class="string">'Fin de Phase'</span>}, <span class="string">'FontSize'</span>, 12)
+    xlabel(<span class="string">'Position x en [m]'</span>), xlim([x_actu(1) x_actu(end)]),
+    ylabel(<span class="string">'Temp&eacute;rature en [&deg;C]'</span>),
+    set(gca, <span class="string">'FontSize'</span>, 15), grid <span class="string">on</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="main_integrales_01.png" alt=""> <img vspace="5" hspace="5" src="main_integrales_02.png" alt=""> <img vspace="5" hspace="5" src="main_integrales_03.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Mandat 3.2 - Intégration numérique avec _trapz_ ;
+% *Équipe 1:*         
+%
+% * _Loïc de Bluze,_
+% * _Anthony Drouin,_
+% * _Thomas Chaland,_
+% * _Simon Gauthier,_
+% * _Cédric Hébert,_
+% * _Louis-George Précourt,_
+%                          
+% *Version en date du 6 décembre 2023;*
+
+clear, close all, clc
+
+%% Calcul de l'énergie perdue par le garnissage pour chaque hauteur de garnissage ;
+
+xg = [0.8 1.6 2.4];
+t = [0, 110, 110];
+prop = [2600, 1000];
+
+data08 = cat(2, struct2cell(load('.\data_simulation_6dec\sol08')));
+data16 = cat(2, struct2cell(load('.\data_simulation_6dec\sol16')));
+data24 = cat(2, struct2cell(load('.\data_simulation_6dec\sol24')));
+
+distT = {data08 data16 data24};
+discrx = 1000 ;
+
+for i = 1:length(xg)
+    % Maillage de la surface en x ;
+    x_actu = [0, xg(i), discrx];
+    meshx = linspace(min(x_actu), max(x_actu), discrx);
+    
+    % Résultats de simulation mis sous forme matricielle ;
+    distT_actu = distT{i};
+    distT_actu = distT_actu{:,:};
+    
+    % Appelation de la fonction d'intégration ;
+    [t0, tf, J_m2] = integ(x_actu, t, prop, distT_actu);
+    
+    % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Création d'une nouvelle figure à chaque nouvelle itération sur i ;
+    figure
+    plot(meshx, distT_actu(t(1)+1,:), 'kREPLACE_WITH_DASH_DASH', 'LineWidth', 1.5), hold on
+    plot(meshx, distT_actu(t(end),:),  'k', 'LineWidth', 1.5),
+    
+    % Texte à incorporer aux figures ;
+    txt = convertCharsToStrings(['Énergie transmise du garnissage aux gaz => ',...
+        num2str(abs(J_m2)), ' [kJ/m^2]']);
+    text(0.025, 750, txt, 'Fontsize', 15);
+    txt2 = convertCharsToStrings(['Hauteur du garnissage de ', num2str(xg(i)), ' [m]']);
+    
+    % Mise en forme de la figure ;
+    title('Comparaison des distributions de température en Phase 1', 'FontSize', 22)
+    subtitle({txt2, 'Début de Phase, t = 0 [sec]', 'Fin de Phase, t = 110 [sec]'}, ...
+        'FontSize', 18)
+    legend({'Début de Phase', 'Fin de Phase'}, 'FontSize', 12)
+    xlabel('Position x en [m]'), xlim([x_actu(1) x_actu(end)]), 
+    ylabel('Température en [°C]'), 
+    set(gca, 'FontSize', 15), grid on
+end
+
+##### SOURCE END #####
+--></body></html>

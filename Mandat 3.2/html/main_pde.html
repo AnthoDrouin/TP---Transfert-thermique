@@ -1,0 +1,577 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>main_pde</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-12-06"><meta name="DC.source" content="main_pde.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Mandat 3.2 - R&eacute;solution de l'EDP de chaleur ;</a></li><li><a href="#2">Importation des donnees empiriques ;</a></li><li><a href="#3">Initiation des donn&eacute;es: DONN&Eacute;ES DES CYCLES DU RROT</a></li><li><a href="#4">Boucle qui ex&eacute;cute la simulation pour toutes les valeurs de xmax du garnissage ;</a></li><li><a href="#6">Boucle qui r&eacute;soud l'EDP de chaleur pour imax cycle ;</a></li><li><a href="#8">--------------------- Solution pour h_garnissage = 0.8 [m] ;</a></li><li><a href="#9">--------------------- Solution pour h_garnissage = 1.6 [m] ;</a></li><li><a href="#10">--------------------- Solution pour h_garnissage = 2.4 [m] ;</a></li><li><a href="#11">--------------------- Comparaison des r&eacute;sultats simul&eacute;s aux donn&eacute;es exp&eacute;rimentales incluses dans le fichier Excel ;</a></li><li><a href="#12">--------------------- Donn&eacute;es exp&eacute;rimentales ;</a></li><li><a href="#13">--------------------- Donn&eacute;es simul&eacute;es pour h_garnissage = 1.6 [m] ;</a></li><li><a href="#14">--------------------- Comparaison des deux figures pr&eacute;c&eacute;dentes ;</a></li></ul></div><h2 id="1">Mandat 3.2 - R&eacute;solution de l'EDP de chaleur ;</h2><p><b>&Eacute;quipe 1:</b></p><div><ul><li><i>Lo&iuml;c de Bluze,</i></li><li><i>Anthony Drouin,</i></li></ul></div><div><ul><li><i>Thomas Chaland,</i></li><li><i>Simon Gauthier,</i></li></ul></div><div><ul><li><i>C&eacute;dric H&eacute;bert,</i></li><li><i>Louis-George Pr&eacute;court,</i></li></ul></div><p><b>Version en date du 6 d&eacute;cembre 2023;</b></p><pre class="codeinput">clear, close <span class="string">all</span>, clc
+<span class="keyword">global</span> tswitch Tinit Phase dx
+</pre><h2 id="2">Importation des donnees empiriques ;</h2><pre class="codeinput">filename = <span class="string">'Donnees brutes.xlsx'</span>;
+
+<span class="comment">% D&eacute;finition du range de cellule comprennant les donn&eacute;es exp&eacute;rimentales ;</span>
+dataRange = <span class="string">'A1:D33'</span>;
+
+<span class="comment">% Sp&eacute;cification de la feuille incluant les donn&eacute;es d'int&eacute;ret ;</span>
+sheetName = <span class="string">'Sheet3'</span>;
+
+<span class="comment">% Licture des donn&eacute;es d'une feuille sp&eacute;cific du fichier Excel ;</span>
+dataTable = readtable(filename, <span class="string">'Sheet'</span>, sheetName, <span class="string">'Range'</span>, dataRange);
+
+t_calib = dataTable{:,1};
+T3_calib = dataTable{:,2};
+T4_calib = dataTable{:,3};
+T5_calib = dataTable{:,4};
+
+X = t_calib';
+Y = linspace(0, 1.6, 3);
+Z = [T3_calib T4_calib T5_calib];
+
+<span class="comment">% Interpolation ebtre es points connus, pour cr&eacute;er une surface &agrave; tracer</span>
+<span class="comment">% plus tard ;</span>
+Xq = 0:330/256:330;
+Yq = 0:1.6/16:1.6;
+Zq = interp2(Z, 3, <span class="string">'cubic'</span>);
+</pre><h2 id="3">Initiation des donn&eacute;es: DONN&Eacute;ES DES CYCLES DU RROT</h2><pre class="codeinput">imax = 20;                  <span class="comment">% Nombre d'it&eacute;rations maximale ;</span>
+xswitch = 1000;             <span class="comment">% Nombre d'&eacute;l&eacute;ment de discr&eacute;tisation de l'espace ;</span>
+xmax = [0.8 1.6 2.4];       <span class="comment">% Hauteur(s) du garnissage ;</span>
+
+<span class="comment">% G&egrave;re le temps de simulation maximal pour pas trop</span>
+<span class="comment">% attendre que &ccedil;a finisse de calculer ;</span>
+tstart = cputime;           <span class="comment">% Temps 0 du d&eacute;but des calculs ;</span>
+tlim = 600;                 <span class="comment">% Temps maximum de calcul secondes ;</span>
+flag = 0;                   <span class="comment">% Contr&ocirc;le la boucle &laquo; while &raquo; ;</span>
+
+<span class="comment">% Calcul et mise graphique de la solution de l'&eacute;quation de chaleur ;</span>
+figure
+<span class="keyword">while</span> flag == 0
+</pre><h2 id="4">Boucle qui ex&eacute;cute la simulation pour toutes les valeurs de xmax du garnissage ;</h2><pre class="codeinput">    <span class="keyword">for</span> j = 1:length(xmax)
+</pre><pre class="codeinput">        x = linspace(0, xmax(j), xswitch);
+        dx = x(2) - x(1);
+        tswitch = 110;                <span class="comment">% Un cycle dure environ 110 secondes ;</span>
+                                      <span class="comment">% selon les donnees du Excel ;</span>
+        t = linspace(0, tswitch, tswitch);
+        Tinit =  linspace(0, xmax(j), xswitch);
+        Tinit = interp1([0, xmax(j)/2, xmax(j)], [809.5 920 1025.5], Tinit, <span class="string">'linear'</span>);
+</pre><h2 id="6">Boucle qui r&eacute;soud l'EDP de chaleur pour imax cycle ;</h2><pre class="codeinput">        m = 0;
+        <span class="keyword">for</span>  i = 1:imax
+
+            <span class="keyword">if</span> cputime - tstart &gt; tlim
+                fprintf(<span class="string">'Temps de calcul trop long, change dequoi parce que ca finira pu de finir!\n'</span>)
+                flag = flag + 1;
+                <span class="keyword">break</span>
+
+            <span class="keyword">else</span>
+                Phase = 1;
+                sol1 = pdepe(m, @pdefun, @icfun, @bcfun, x, t); <span class="comment">% sol = T(t, x) ;</span>
+                Tinit = sol1(tswitch,:);  <span class="comment">% Assigne les toutes les temp&eacute;ratures</span>
+                                          <span class="comment">% au dernier temps de la solution de la</span>
+                                          <span class="comment">% Phase 1 &agrave; la solution initiale pour</span>
+                                          <span class="comment">% la Phase 2 qui va suivre ;</span>
+                Phase = 2;
+                sol2 = pdepe(m, @pdefun, @icfun, @bcfun, x, t); <span class="comment">% sol = T(t, x) ;</span>
+                Tinit = sol2(tswitch,:);  <span class="comment">% Assigne les toutes les temp&eacute;ratures</span>
+                                          <span class="comment">% de la solution de la Phase 2</span>
+                                          <span class="comment">% &agrave; la solution initiale pour</span>
+                                          <span class="comment">% la Phase 3 qui va suivre ;</span>
+                Phase = 3;
+                sol3 = pdepe(m, @pdefun, @icfun, @bcfun, x, t); <span class="comment">% sol = T(t, x) ;</span>
+                Tinit = sol3(tswitch,:);  <span class="comment">% Assigne les toutes les temp&eacute;ratures</span>
+                                          <span class="comment">% de la solution de la Phase 3</span>
+                                          <span class="comment">% &agrave; la solution initiale pour</span>
+                                          <span class="comment">% la Phase 1 qui va suivre ;</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        <span class="comment">% Remettre en &deg;C ;</span>
+        sol1 = sol1 - 273;
+        sol2 = sol2 - 273;
+        sol3 = sol3 - 273;
+
+        soltot = [sol1; sol2; sol3];
+        t = linspace(0, 3*tswitch, 3*tswitch);
+
+        <span class="comment">% Enregistrement de la solution pour la hauteur de garnissage &agrave;</span>
+        <span class="comment">% sa valeur t = tswitch dans l'aluminerie soit h = 0.8 [m] ;</span>
+        <span class="keyword">if</span> xmax(j) == 0.8 &amp;&amp; i == imax
+            x08 = x;
+            tx08 = t;
+            solx08 = soltot;
+         <span class="keyword">end</span>
+
+        <span class="comment">% Enregistrement de la solution pour la hauteur de garnissage &agrave;</span>
+        <span class="comment">% sa valeur t = tswitch dans l'aluminerie soit h = 1.6 [m] ;</span>
+        <span class="keyword">if</span> xmax(j) == 1.6 &amp;&amp; i == imax
+            x16 = x;
+            tx16 = t;
+            solx16 = soltot;
+        <span class="keyword">end</span>
+
+        <span class="comment">% Enregistrement de la solution pour la hauteur de garnissage &agrave;</span>
+        <span class="comment">% sa valeur t = tswitch dans l'aluminerie soit h = 2.4 [m] ;</span>
+        <span class="keyword">if</span> xmax(j) == 2.4 &amp;&amp; i == imax
+            x24 = x;
+            tx24 = t;
+            solx24 = soltot;
+        <span class="keyword">end</span>
+
+        <span class="comment">% D&eacute;finit la grosseur des &eacute;critures sur les axes;</span>
+        frtz = 15;
+
+        <span class="comment">% --------------------- Solution pour tous les hauteurs de garnissages incluses</span>
+        <span class="comment">%                               dans le vecteur xmax d&eacute;finit &agrave; la ligne 36;</span>
+        subplot(length(xmax), 1, j), surf(x, t, soltot, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>), hold <span class="string">on</span>
+        title(<span class="string">'Distribution de &deg;T dans le garnissage pour une hauteur en m&egrave;tres de'</span>,<span class="keyword">...</span>
+            xmax(j), <span class="string">'FontSize'</span>, 0.75*frtz)
+        xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, 0.75*frtz),
+        ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, 0.75*frtz),
+        zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, 0.75*frtz),
+        set(gca, <span class="string">'FontSize'</span>, 0.75*frtz), colormap(<span class="string">'jet'</span>)
+
+        <span class="comment">% Condition pour briser la boucle &laquo; while &raquo; si une solution est</span>
+        <span class="comment">% trouv&eacute;e avant l'atteinte de la limite de temps -tlim- ;</span>
+        <span class="keyword">if</span> j == length(xmax) &amp;&amp; i == imax
+                fprintf(<span class="string">'Convergence avant la fin du chrono!\n'</span>)
+        <span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="main_pde_01.png" alt=""> <img vspace="5" hspace="5" src="main_pde_02.png" alt=""> <pre class="codeoutput">Convergence avant la fin du chrono!
+</pre><img vspace="5" hspace="5" src="main_pde_03.png" alt=""> <pre class="codeinput">    <span class="keyword">end</span>
+</pre><h2 id="8">--------------------- Solution pour h_garnissage = 0.8 [m] ;</h2><pre class="codeinput">figure
+surf(x08, tx08, solx08, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>),
+title(<span class="string">'\fontsize{20}Distribution de &deg;T dans le garnissage pour une hauteur en m&egrave;tres de'</span>, xmax(1))
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, frtz),
+set(gca, <span class="string">'FontSize'</span>, frtz), colormap(<span class="string">'jet'</span>)
+</pre><img vspace="5" hspace="5" src="main_pde_04.png" alt=""> <h2 id="9">--------------------- Solution pour h_garnissage = 1.6 [m] ;</h2><pre class="codeinput">figure
+surf(x16, tx16, solx16, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>),
+title(<span class="string">'Distribution de &deg;T dans le garnissage pour une hauteur en m&egrave;tres de'</span>, xmax(2))
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, frtz),
+set(gca, <span class="string">'FontSize'</span>, frtz), colormap(<span class="string">'jet'</span>)
+</pre><img vspace="5" hspace="5" src="main_pde_05.png" alt=""> <img vspace="5" hspace="5" src="main_pde_06.png" alt=""> <h2 id="10">--------------------- Solution pour h_garnissage = 2.4 [m] ;</h2><pre class="codeinput">figure
+surf(x24, tx24, solx24, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>),
+title(<span class="string">'Distribution de &deg;T dans le garnissage pour une hauteur en m&egrave;tres de'</span>, xmax(3))
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, frtz),
+set(gca, <span class="string">'FontSize'</span>, frtz), colormap(<span class="string">'jet'</span>)
+</pre><img vspace="5" hspace="5" src="main_pde_07.png" alt=""> <img vspace="5" hspace="5" src="main_pde_08.png" alt=""> <h2 id="11">--------------------- Comparaison des r&eacute;sultats simul&eacute;s aux donn&eacute;es exp&eacute;rimentales incluses dans le fichier Excel ;</h2><p>------- Donn&eacute;es exp&eacute;rimentales ;</p><pre class="codeinput">figure
+subplot(3,1,1),  surf(Yq, Xq, Zq,<span class="string">'edgecolor'</span>, <span class="string">'none'</span>), hold <span class="string">on</span>,
+title(<span class="string">'Distribution des &deg;T exp&eacute;rimentales fournises dans Excel'</span>);
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, 0.75*frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, 0.75*frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, 0.75*frtz),
+set(gca, <span class="string">'FontSize'</span>, 0.75*frtz), colormap(<span class="string">'jet'</span>)
+
+<span class="comment">% ------- Donn&eacute;es de simulation pour h = 1.6 [m] ;</span>
+subplot(3,1,2), surf(x16, tx16, solx16, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>),
+title(<span class="string">'Distribution des &deg;T de simulation dans le garnissage pour une hauteur de 1.6 [m]'</span>);
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, 0.75*frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, 0.75*frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, 0.75*frtz),
+set(gca, <span class="string">'FontSize'</span>, 0.75*frtz), colormap(<span class="string">'jet'</span>)
+
+<span class="comment">% ------- Comparaison des donn&eacute;es pr&eacute;c&eacute;dentes ;</span>
+subplot(3,1,3), surf(x16, tx16, solx16, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>), colormap(<span class="string">'jet'</span>),
+freezeColors,
+hold <span class="string">on</span>
+surf(Yq, Xq, Zq, <span class="string">'FaceLighting'</span>,<span class="string">'gouraud'</span>,<span class="keyword">...</span>
+                    <span class="string">'MeshStyle'</span>,<span class="string">'column'</span>,<span class="keyword">...</span>
+                    <span class="string">'SpecularExponent'</span>,1,<span class="keyword">...</span>
+                    <span class="string">'SpecularStrength'</span>,1,<span class="keyword">...</span>
+                    <span class="string">'DiffuseStrength'</span>,1,<span class="keyword">...</span>
+                    <span class="string">'AmbientStrength'</span>,0.4,<span class="keyword">...</span>
+                    <span class="string">'FaceColor'</span>,[0.5 0.5 .5],<span class="keyword">...</span>
+                    <span class="string">'AlignVertexCenters'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+                    <span class="string">'LineWidth'</span>,0.2,<span class="keyword">...</span>
+                    <span class="string">'EdgeAlpha'</span>,1);
+freezeColors,
+title(<span class="string">'Comparaison des donn&eacute;es de simulation aux donn&eacute;es exp&eacute;rimentale pour hauteur de 1.6 [m]'</span>);
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, 0.75*frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, 0.75*frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, 0.75*frtz),
+set(gca, <span class="string">'FontSize'</span>, 0.75*frtz)
+lgd = legend({<span class="string">'R&eacute;sultats de Simulation'</span>,<span class="string">'Donn&eacute;es exp'</span>}, <span class="string">'FontSize'</span>, 0.75*frtz);
+lgd.Location = <span class="string">'northwest'</span>;
+</pre><img vspace="5" hspace="5" src="main_pde_09.png" alt=""> <img vspace="5" hspace="5" src="main_pde_10.png" alt=""> <h2 id="12">--------------------- Donn&eacute;es exp&eacute;rimentales ;</h2><pre class="codeinput">figure
+surf(Yq, Xq, Zq,<span class="string">'edgecolor'</span>, <span class="string">'none'</span>), hold <span class="string">on</span>,
+title(<span class="string">'Distribution des &deg;T exp&eacute;rimentales fournises dans Excel'</span>);
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, frtz),
+set(gca, <span class="string">'FontSize'</span>, frtz), colormap(<span class="string">'jet'</span>)
+</pre><img vspace="5" hspace="5" src="main_pde_11.png" alt=""> <h2 id="13">--------------------- Donn&eacute;es simul&eacute;es pour h_garnissage = 1.6 [m] ;</h2><pre class="codeinput">figure
+surf(x16, tx16, solx16, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>),
+title(<span class="string">'Distribution des &deg;T de simulation dans le garnissage pour une hauteur de 1.6 [m]'</span>);
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, frtz),
+set(gca, <span class="string">'FontSize'</span>, frtz) , colormap(<span class="string">'jet'</span>)
+</pre><img vspace="5" hspace="5" src="main_pde_12.png" alt=""> <img vspace="5" hspace="5" src="main_pde_13.png" alt=""> <h2 id="14">--------------------- Comparaison des deux figures pr&eacute;c&eacute;dentes ;</h2><pre class="codeinput">figure
+surf(x16, tx16, solx16, <span class="string">'edgecolor'</span>, <span class="string">'none'</span>), colormap(<span class="string">'jet'</span>),
+freezeColors,
+hold <span class="string">on</span>
+surf(Yq, Xq, Zq, <span class="string">'FaceLighting'</span>,<span class="string">'gouraud'</span>,<span class="keyword">...</span>
+                    <span class="string">'MeshStyle'</span>,<span class="string">'column'</span>,<span class="keyword">...</span>
+                    <span class="string">'SpecularExponent'</span>,1,<span class="keyword">...</span>
+                    <span class="string">'SpecularStrength'</span>,1,<span class="keyword">...</span>
+                    <span class="string">'DiffuseStrength'</span>,1,<span class="keyword">...</span>
+                    <span class="string">'AmbientStrength'</span>,0.4,<span class="keyword">...</span>
+                    <span class="string">'FaceColor'</span>,[0.5 0.5 .5],<span class="keyword">...</span>
+                    <span class="string">'AlignVertexCenters'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+                    <span class="string">'LineWidth'</span>,0.2,<span class="keyword">...</span>
+                    <span class="string">'EdgeAlpha'</span>,1);
+freezeColors,
+title(<span class="string">'Comparaison des donn&eacute;es de simulation aux donn&eacute;es exp&eacute;rimentale pour hauteur de 1.6 [m]'</span>);
+xlabel(<span class="string">'Position dans le garnissage [m]'</span>,<span class="string">'FontSize'</span>, frtz),
+ylabel(<span class="string">'Temps [sec]'</span>, <span class="string">'FontSize'</span>, frtz),
+zlabel(<span class="string">'Temp&eacute;rature [&deg;C]'</span>,<span class="string">'FontSize'</span>, frtz),
+set(gca, <span class="string">'FontSize'</span>, frtz), colormap(<span class="string">'jet'</span>)
+lgd = legend({<span class="string">'R&eacute;sultats de Simulation'</span>,<span class="string">'Donn&eacute;es exp'</span>}, <span class="string">'FontSize'</span>, 0.75*frtz);
+lgd.Location = <span class="string">'northwest'</span>;
+<span class="keyword">return</span>
+</pre><img vspace="5" hspace="5" src="main_pde_14.png" alt=""> <img vspace="5" hspace="5" src="main_pde_15.png" alt=""> <pre class="codeinput"><span class="keyword">end</span>
+
+
+
+<span class="comment">% --------------------- Si la simulation est arr&ecirc;ter par la fin du chrono ;</span>
+<span class="keyword">if</span> flag == 1
+    fprintf(<span class="string">'Impossible de r&eacute;soudre dans les d&eacute;lais!\n'</span>)
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Mandat 3.2 - Résolution de l'EDP de chaleur ;
+% *Équipe 1:*         
+% 
+% 
+% * _Loïc de Bluze,_
+% * _Anthony Drouin,_
+% 
+% 
+% * _Thomas Chaland,_
+% * _Simon Gauthier,_
+% 
+% * _Cédric Hébert,_
+% * _Louis-George Précourt,_
+%                          
+% *Version en date du 6 décembre 2023;*
+
+clear, close all, clc
+global tswitch Tinit Phase dx 
+
+%% Importation des donnees empiriques ;
+filename = 'Donnees brutes.xlsx';
+
+% Définition du range de cellule comprennant les données expérimentales ;
+dataRange = 'A1:D33';
+
+% Spécification de la feuille incluant les données d'intéret ;
+sheetName = 'Sheet3';
+
+% Licture des données d'une feuille spécific du fichier Excel ;
+dataTable = readtable(filename, 'Sheet', sheetName, 'Range', dataRange);
+
+t_calib = dataTable{:,1};
+T3_calib = dataTable{:,2};
+T4_calib = dataTable{:,3};
+T5_calib = dataTable{:,4};
+
+X = t_calib';
+Y = linspace(0, 1.6, 3);
+Z = [T3_calib T4_calib T5_calib];
+
+% Interpolation ebtre es points connus, pour créer une surface à tracer
+% plus tard ;
+Xq = 0:330/256:330;
+Yq = 0:1.6/16:1.6;
+Zq = interp2(Z, 3, 'cubic');
+
+%% Initiation des données: DONNÉES DES CYCLES DU RROT
+imax = 20;                  % Nombre d'itérations maximale ; 
+xswitch = 1000;             % Nombre d'élément de discrétisation de l'espace ;
+xmax = [0.8 1.6 2.4];       % Hauteur(s) du garnissage ;
+
+% Gère le temps de simulation maximal pour pas trop 
+% attendre que ça finisse de calculer ;
+tstart = cputime;           % Temps 0 du début des calculs ;
+tlim = 600;                 % Temps maximum de calcul secondes ;
+flag = 0;                   % Contrôle la boucle « while » ;
+
+% Calcul et mise graphique de la solution de l'équation de chaleur ;
+figure
+while flag == 0
+    %% Boucle qui exécute la simulation pour toutes les valeurs de xmax du garnissage ;
+    for j = 1:length(xmax)
+        
+        x = linspace(0, xmax(j), xswitch);
+        dx = x(2) - x(1);
+        tswitch = 110;                % Un cycle dure environ 110 secondes ;
+                                      % selon les donnees du Excel ;
+        t = linspace(0, tswitch, tswitch);
+        Tinit =  linspace(0, xmax(j), xswitch);
+        Tinit = interp1([0, xmax(j)/2, xmax(j)], [809.5 920 1025.5], Tinit, 'linear'); 
+
+        %% Boucle qui résoud l'EDP de chaleur pour imax cycle ;
+        m = 0;
+        for  i = 1:imax
+            
+            if cputime - tstart > tlim
+                fprintf('Temps de calcul trop long, change dequoi parce que ca finira pu de finir!\n')
+                flag = flag + 1;
+                break
+                
+            else
+                Phase = 1;
+                sol1 = pdepe(m, @pdefun, @icfun, @bcfun, x, t); % sol = T(t, x) ;
+                Tinit = sol1(tswitch,:);  % Assigne les toutes les températures 
+                                          % au dernier temps de la solution de la 
+                                          % Phase 1 à la solution initiale pour 
+                                          % la Phase 2 qui va suivre ;
+                Phase = 2;
+                sol2 = pdepe(m, @pdefun, @icfun, @bcfun, x, t); % sol = T(t, x) ;
+                Tinit = sol2(tswitch,:);  % Assigne les toutes les températures 
+                                          % de la solution de la Phase 2
+                                          % à la solution initiale pour 
+                                          % la Phase 3 qui va suivre ;
+                Phase = 3;
+                sol3 = pdepe(m, @pdefun, @icfun, @bcfun, x, t); % sol = T(t, x) ;
+                Tinit = sol3(tswitch,:);  % Assigne les toutes les températures 
+                                          % de la solution de la Phase 3
+                                          % à la solution initiale pour 
+                                          % la Phase 1 qui va suivre ;
+            end
+        end
+        % Remettre en °C ;
+        sol1 = sol1 - 273;
+        sol2 = sol2 - 273;
+        sol3 = sol3 - 273;
+
+        soltot = [sol1; sol2; sol3];
+        t = linspace(0, 3*tswitch, 3*tswitch);
+        
+        % Enregistrement de la solution pour la hauteur de garnissage à
+        % sa valeur t = tswitch dans l'aluminerie soit h = 0.8 [m] ;
+        if xmax(j) == 0.8 && i == imax
+            x08 = x;
+            tx08 = t;
+            solx08 = soltot;
+         end 
+        
+        % Enregistrement de la solution pour la hauteur de garnissage à
+        % sa valeur t = tswitch dans l'aluminerie soit h = 1.6 [m] ;
+        if xmax(j) == 1.6 && i == imax
+            x16 = x;
+            tx16 = t;
+            solx16 = soltot; 
+        end 
+        
+        % Enregistrement de la solution pour la hauteur de garnissage à
+        % sa valeur t = tswitch dans l'aluminerie soit h = 2.4 [m] ;
+        if xmax(j) == 2.4 && i == imax
+            x24 = x;
+            tx24 = t;
+            solx24 = soltot;
+        end    
+                
+        % Définit la grosseur des écritures sur les axes; 
+        frtz = 15;
+        
+        % REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Solution pour tous les hauteurs de garnissages incluses
+        %                               dans le vecteur xmax définit à la ligne 36;
+        subplot(length(xmax), 1, j), surf(x, t, soltot, 'edgecolor', 'none'), hold on
+        title('Distribution de °T dans le garnissage pour une hauteur en mètres de',...
+            xmax(j), 'FontSize', 0.75*frtz)
+        xlabel('Position dans le garnissage [m]','FontSize', 0.75*frtz), 
+        ylabel('Temps [sec]', 'FontSize', 0.75*frtz),
+        zlabel('Température [°C]','FontSize', 0.75*frtz),
+        set(gca, 'FontSize', 0.75*frtz), colormap('jet')
+        
+        % Condition pour briser la boucle « while » si une solution est
+        % trouvée avant l'atteinte de la limite de temps -tlim- ;
+        if j == length(xmax) && i == imax
+                fprintf('Convergence avant la fin du chrono!\n')
+        end
+    end
+%% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Solution pour h_garnissage = 0.8 [m] ;
+figure         
+surf(x08, tx08, solx08, 'edgecolor', 'none'),
+title('\fontsize{20}Distribution de °T dans le garnissage pour une hauteur en mètres de', xmax(1))
+xlabel('Position dans le garnissage [m]','FontSize', frtz), 
+ylabel('Temps [sec]', 'FontSize', frtz),
+zlabel('Température [°C]','FontSize', frtz), 
+set(gca, 'FontSize', frtz), colormap('jet')
+
+%% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Solution pour h_garnissage = 1.6 [m] ;
+figure         
+surf(x16, tx16, solx16, 'edgecolor', 'none'),
+title('Distribution de °T dans le garnissage pour une hauteur en mètres de', xmax(2))
+xlabel('Position dans le garnissage [m]','FontSize', frtz), 
+ylabel('Temps [sec]', 'FontSize', frtz),
+zlabel('Température [°C]','FontSize', frtz), 
+set(gca, 'FontSize', frtz), colormap('jet')
+
+%% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Solution pour h_garnissage = 2.4 [m] ;
+figure         
+surf(x24, tx24, solx24, 'edgecolor', 'none'),
+title('Distribution de °T dans le garnissage pour une hauteur en mètres de', xmax(3))
+xlabel('Position dans le garnissage [m]','FontSize', frtz), 
+ylabel('Temps [sec]', 'FontSize', frtz),
+zlabel('Température [°C]','FontSize', frtz), 
+set(gca, 'FontSize', frtz), colormap('jet')
+
+%% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Comparaison des résultats simulés aux données expérimentales incluses dans le fichier Excel ;                      
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Données expérimentales ; 
+figure         
+subplot(3,1,1),  surf(Yq, Xq, Zq,'edgecolor', 'none'), hold on,
+title('Distribution des °T expérimentales fournises dans Excel');
+xlabel('Position dans le garnissage [m]','FontSize', 0.75*frtz), 
+ylabel('Temps [sec]', 'FontSize', 0.75*frtz),
+zlabel('Température [°C]','FontSize', 0.75*frtz), 
+set(gca, 'FontSize', 0.75*frtz), colormap('jet')
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Données de simulation pour h = 1.6 [m] ; 
+subplot(3,1,2), surf(x16, tx16, solx16, 'edgecolor', 'none'),
+title('Distribution des °T de simulation dans le garnissage pour une hauteur de 1.6 [m]');
+xlabel('Position dans le garnissage [m]','FontSize', 0.75*frtz), 
+ylabel('Temps [sec]', 'FontSize', 0.75*frtz),
+zlabel('Température [°C]','FontSize', 0.75*frtz), 
+set(gca, 'FontSize', 0.75*frtz), colormap('jet')
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Comparaison des données précédentes ; 
+subplot(3,1,3), surf(x16, tx16, solx16, 'edgecolor', 'none'), colormap('jet'), 
+freezeColors,
+hold on
+surf(Yq, Xq, Zq, 'FaceLighting','gouraud',...
+                    'MeshStyle','column',...
+                    'SpecularExponent',1,...
+                    'SpecularStrength',1,...
+                    'DiffuseStrength',1,...
+                    'AmbientStrength',0.4,...
+                    'FaceColor',[0.5 0.5 .5],...
+                    'AlignVertexCenters','on',...
+                    'LineWidth',0.2,...
+                    'EdgeAlpha',1); 
+freezeColors, 
+title('Comparaison des données de simulation aux données expérimentale pour hauteur de 1.6 [m]');
+xlabel('Position dans le garnissage [m]','FontSize', 0.75*frtz), 
+ylabel('Temps [sec]', 'FontSize', 0.75*frtz),
+zlabel('Température [°C]','FontSize', 0.75*frtz), 
+set(gca, 'FontSize', 0.75*frtz)
+lgd = legend({'Résultats de Simulation','Données exp'}, 'FontSize', 0.75*frtz);
+lgd.Location = 'northwest';
+
+%% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Données expérimentales ; 
+figure         
+surf(Yq, Xq, Zq,'edgecolor', 'none'), hold on,
+title('Distribution des °T expérimentales fournises dans Excel');
+xlabel('Position dans le garnissage [m]','FontSize', frtz), 
+ylabel('Temps [sec]', 'FontSize', frtz),
+zlabel('Température [°C]','FontSize', frtz), 
+set(gca, 'FontSize', frtz), colormap('jet')
+
+%% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Données simulées pour h_garnissage = 1.6 [m] ;
+figure
+surf(x16, tx16, solx16, 'edgecolor', 'none'),
+title('Distribution des °T de simulation dans le garnissage pour une hauteur de 1.6 [m]');
+xlabel('Position dans le garnissage [m]','FontSize', frtz), 
+ylabel('Temps [sec]', 'FontSize', frtz),
+zlabel('Température [°C]','FontSize', frtz), 
+set(gca, 'FontSize', frtz) , colormap('jet')
+
+%% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Comparaison des deux figures précédentes ;
+figure
+surf(x16, tx16, solx16, 'edgecolor', 'none'), colormap('jet'), 
+freezeColors,
+hold on
+surf(Yq, Xq, Zq, 'FaceLighting','gouraud',...
+                    'MeshStyle','column',...
+                    'SpecularExponent',1,...
+                    'SpecularStrength',1,...
+                    'DiffuseStrength',1,...
+                    'AmbientStrength',0.4,...
+                    'FaceColor',[0.5 0.5 .5],...
+                    'AlignVertexCenters','on',...
+                    'LineWidth',0.2,...
+                    'EdgeAlpha',1); 
+freezeColors, 
+title('Comparaison des données de simulation aux données expérimentale pour hauteur de 1.6 [m]');
+xlabel('Position dans le garnissage [m]','FontSize', frtz), 
+ylabel('Temps [sec]', 'FontSize', frtz),
+zlabel('Température [°C]','FontSize', frtz), 
+set(gca, 'FontSize', frtz), colormap('jet')
+lgd = legend({'Résultats de Simulation','Données exp'}, 'FontSize', 0.75*frtz);
+lgd.Location = 'northwest';
+return
+end
+
+
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Si la simulation est arrêter par la fin du chrono ;
+if flag == 1
+    fprintf('Impossible de résoudre dans les délais!\n')
+end
+
+##### SOURCE END #####
+--></body></html>
